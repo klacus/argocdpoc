@@ -1,0 +1,8 @@
+first_name,last_name,department,job_title,description
+User1,Doe,System1,Developer,developer for system 1 software components
+User2,Doe,System1,Manager,manager for system 1 software components
+User3,Doe,System2,Developer,developer for system 2 software components
+User4,Doe,System2,Developer,developer for system 2 software components
+User5,Doe,System2,Manager,manager for system 2 software components
+User6,Doe,Engineering,Engineer,engineer with admin access to support and manage infrastructure
+User7,Doe,Engineering,Manager,engineer with admin access to support and manage infrastructure
