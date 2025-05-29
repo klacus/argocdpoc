@@ -1,13 +1,17 @@
 # argocdpoc
 A proof of concept Argo CD deployment
 
+
+# Do not forget removing Azure resources when you done with the POC to avoid unnecessary charges and costs!
+
 # Prerequisites
 
+Linux and bash shell.
 azure cli
 kubectl
 kubelogin through azure cli `sudo az aks install-cli` https://azure.github.io/kubelogin/install.html#using-azure-cli
 
-## Recommanded
+## Recommended
 k9s
 
 ### You need to create the following Azure resources manually:
