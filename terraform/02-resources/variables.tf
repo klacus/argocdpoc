@@ -1,3 +1,14 @@
+variable "allowed_ip_ranges" {
+  description = "List of allowed IP ranges to restrict access to Azure resources."
+  type        = list(string)
+  default     = []
+}
+
+variable "aks_config" {
+  description = "Configuration for the AKS cluster."
+  type = any
+}
+
 variable "app_name" {
   description = "The name of the application."
   type        = string  
@@ -30,6 +41,11 @@ variable "subscription_id" {
   type        = string
 }
 
+variable "azure_tenant_id" {
+  description = "The Azure tenant ID."
+  type        = string    
+}
+
 variable "tags" {
   description = "Tags to be applied to all resources."
   type        = map(string)
@@ -38,9 +54,4 @@ variable "tags" {
     provisioner = "terraform"
     purpose     = "Proof of concept for Argo CD."
   }
-}
-
-variable "aks_config" {
-  description = "Configuration for the AKS cluster."
-  type = any
 }

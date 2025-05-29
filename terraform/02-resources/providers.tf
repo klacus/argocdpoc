@@ -4,7 +4,10 @@ provider "azurerm" {
   subscription_id = var.subscription_id
 }
 
-provider "azuread" {}
+provider "azuread" {
+  # The Azure AD provider is used for managing Azure Active Directory resources.
+  tenant_id = var.azure_tenant_id
+}
 
 terraform {
   required_version = "~> 1"

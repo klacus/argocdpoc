@@ -21,4 +21,4 @@ TFVARFILE="${BASEDIR}/../../deployment/environments/${LIFECYCLE}/${REGION}.tfvar
 echo "Terraform working directory: $TFROOT"
 echo "Terraform variables file: $TFVARFILE"
 
-terraform apply -auto-approve -var-file="$TFVARFILE" -lock=false -var=build_repository_uri="localdev" -target=azuread_group_member.engineering -target=azuread_group_member.engineering_managers -target=azuread_group_member.system1 -target=azuread_group_member.system1_managers -target=azuread_group_member.system2 -target=azuread_group_member.system2_managers
+terraform apply -auto-approve -var-file="$TFVARFILE" -lock=false -var=build_repository_uri="localdev" -target=azuread_group_member.me  -target=azuread_group_member.me_managers -target=azuread_group_member.engineering -target=azuread_group_member.engineering_managers -target=azuread_group_member.system1 -target=azuread_group_member.system1_managers -target=azuread_group_member.system2 -target=azuread_group_member.system2_managers
