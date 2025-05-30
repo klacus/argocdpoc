@@ -1,5 +1,7 @@
 # argocdpoc
-A proof of concept Argo CD deployment
+A proof of concept Argo CD deployment.
+
+The goal of this repository to deploy a working Argo CD solution using Azure Kubernetes Services (AKS) from scratch to provide a basic sample environment to demonstrate Argo CD and how it can enable developers to deploy automatically deploy and manage their workload on Kubernetes using Argo CD.
 
 
 # Do not forget removing Azure resources when you done with the POC to avoid unnecessary charges and costs!
@@ -32,3 +34,11 @@ Storage Account Container: terraform-state-files
     2.2. Deploy users and grouops. Run ``/terraform/01-entraid/tfapply-objects.sh`` then /``terraform/01-entraid/tfapply-membership.sh``
 
 3. Deploy AKS
+tfapply. Run `/terraform/02-aks/tfapply.sh`
+
+4. Deploy Tooling
+- cert-manager
+- traefik
+- registry
+- argocd
+

@@ -1,0 +1,13 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: allow-traefik-gateway-to-secrets
+  namespace: cert-manager # <-- This is where the Secret is
+spec:
+  from:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      namespace: traefik # <-- This is where your Traefik Gateway is
+  to:
+    - group: ""
+      kind: Secret
