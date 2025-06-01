@@ -2,7 +2,6 @@
 
 BASEDIR=$(dirname "$(realpath "$0")")
 
-
 LIFECYCLE=${1}
 if [ -z "${LIFECYCLE}" ]; then
   echo "Usage: $0 <lifecycle>"
@@ -15,8 +14,8 @@ if [ -z "${REGION}" ]; then
   exit 2
 fi
 
-TFROOT="${BASEDIR}/../terraform"
-TFVARFILE="${BASEDIR}/../../deployment/environments/${LIFECYCLE}/${REGION}.tfvars"
+TFROOT="${BASEDIR}"
+TFVARFILE="${BASEDIR}/../deployment/environments/${LIFECYCLE}/${REGION}.tfvars"
 
 echo "Terraform working directory: $TFROOT"
 echo "Terraform variables file: $TFVARFILE"

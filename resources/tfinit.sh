@@ -16,7 +16,7 @@ if [ -z "${REGION}" ]; then
 fi
 
 TFROOT="${BASEDIR}"
-TFBACKEND="${BASEDIR}/../../deployment/environments/${LIFECYCLE}/${REGION}-backend.conf"
+TFBACKEND="${BASEDIR}/../deployment/environments/${LIFECYCLE}/${REGION}-backend.conf"
 
 echo "Initializing Terraform in ${TFROOT} directory ..."
 terraform -chdir="${TFROOT}" init -reconfigure -backend-config=${TFBACKEND}

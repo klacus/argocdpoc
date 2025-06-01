@@ -15,8 +15,8 @@ if [ -z "${REGION}" ]; then
   exit 2
 fi
 
-TFROOT="${BASEDIR}/../terraform"
-TFVARFILE="${BASEDIR}/../../deployment/environments/${LIFECYCLE}/${REGION}.tfvars"
+TFROOT="${BASEDIR}"
+TFVARFILE="${BASEDIR}/../deployment/environments/${LIFECYCLE}/${REGION}.tfvars"
 
 echo "Terraform working directory: $TFROOT"
 echo "Terraform variables file: $TFVARFILE"

@@ -16,9 +16,8 @@ if [ -z "${REGION}" ]; then
 fi
 
 TFROOT="${BASEDIR}"
-TFVARFILE="${BASEDIR}/../../deployment/environments/${LIFECYCLE}/${REGION}.tfvars"
-
+TFVARFILE="${BASEDIR}/../deployment/environments/${LIFECYCLE}/${REGION}.tfvars"
 echo "Terraform working directory: $TFROOT"
 echo "Terraform variables file: $TFVARFILE"
 
-terraform -chdir="$TFROOT" plan -var-file="$TFVARFILE" -lock=false -var=build_repository_uri="localdev"
+terraform -chdir="$TFROOT" destroy -auto-approve -var-file="$TFVARFILE" -lock=false -var=build_repository_uri="localdev"

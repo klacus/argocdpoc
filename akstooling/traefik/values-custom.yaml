@@ -4,6 +4,7 @@ providers:  # @schema additionalProperties: false
     enabled: true
 
 gateway:
+  enabled: true
   listeners:
     websecure:
       # -- Port is the network port. Multiple listeners may use the same port, subject to the Listener compatibility rules.
@@ -15,10 +16,10 @@ gateway:
       protocol: HTTPS
       # -- Add certificates for TLS or HTTPS protocols. See [GatewayTLSConfig](https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io%2fv1.GatewayTLSConfig)
       certificateRefs:
-        - name: root-secret # This must match the secretName from your Certificate
+        - name: traefik-gw-cert # This must match the secretName from your Certificate
           kind: Secret
           group: "" # The group for Secret resources is empty
-          namespace: cert-manager # The namespace where the secret is located
+          namespace: traefik # The namespace where the secret is located
 
 ingressRoute:
   dashboard:

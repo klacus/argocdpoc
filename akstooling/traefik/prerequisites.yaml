@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: traefik
+--- 
+
+# apiVersion: gateway.networking.k8s.io/v1beta1
+# kind: ReferenceGrant
+# metadata:
+#   name: allow-traefik-gateway-to-secrets
+#   namespace: cert-manager # <-- This is where the Secret is
+# spec:
+#   from:
+#     - group: gateway.networking.k8s.io
+#       kind: Gateway
+#       namespace: traefik # <-- This is where your Traefik Gateway is
+#   to:
+#     - group: ""
+#       kind: Secret
+---
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: traefik-gw-cert
+  namespace: hello # Or the namespace where you want the Secret to be created
+spec:
+  secretName: traefik-gw-cert # The name of the Secret that will store the certificate
+  commonName: podinfo.services.labk3s.perihelion.lan
+  subject:
+    organizations:
+      - POC 
+    organizationalUnits:
+      - ArgoCD POC
+  duration: 720h # 30 days (720 hours)
+  renewBefore: 240h # 10 days (240 hours)
+  dnsNames:
+    - services.argocdpoc.perihelion.lan
+  issuerRef:
+    # This should reference your cert-manager Issuer or ClusterIssuer.
+    # Replace 'my-issuer' with the name of your Issuer or ClusterIssuer.
+    # Replace 'Issuer' with 'ClusterIssuer' if you are using a ClusterIssuer.
+    name: my-ca-issuer
+    kind: ClusterIssuer # Or 'ClusterIssuer'
+    group: cert-manager.io
+  usages:
+      - digital signature
+      - key agreement
+      - server auth
+      - client auth
+  privateKey:
+    algorithm: RSA
+    size: 4096 # Or 4096 for stronger security
+
