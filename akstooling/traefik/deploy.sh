@@ -1,12 +1,13 @@
 #!/bin/bash
 
-source ../configuration.sh
+source ../../configuration.sh
+
+VERSION=35.4.0
 
 echo "Deploying Traefik ..."
-helm pull https://helm.traefik.io/traefik --version 17.3.2 --untar
+helm pull oci://ghcr.io/traefik/helm/traefik --version ${VERSION}
 
+kubectl apply -f prerequisites.yaml -n traefik --wait
 
-
-kubectl apply -f referencegrant.yaml -n cert-manager --wait
-
-helm upgrade traefik ./traefik --install --namespace traefik --create-namespace -f ./values-custom.yaml
+# helm upgrade traefik ./traefik --install --namespace traefik --create-namespace -f ./values-custom.yaml
+helm upgrade traefik oci://ghcr.io/traefik/helm/traefik --install --version ${VERSION} --namespace traefik --create-namespace -f ./values-custom.yaml

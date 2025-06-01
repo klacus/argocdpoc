@@ -23,10 +23,10 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: traefik-gw-cert
-  namespace: hello # Or the namespace where you want the Secret to be created
+  namespace: traefik # Or the namespace where you want the Secret to be created
 spec:
   secretName: traefik-gw-cert # The name of the Secret that will store the certificate
-  commonName: podinfo.services.labk3s.perihelion.lan
+  commonName: services.argocdpoc.perihelion.lan
   subject:
     organizations:
       - POC 

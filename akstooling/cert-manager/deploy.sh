@@ -1,24 +1,20 @@
 #!/bin/bash
 
 # See lab configuration in the file referenced below.
-source ../configuration.sh
-
+source ../../configuration.sh
+VERSION=v1.17.2
 # Download Custom Resource Definitions.
-# curl -O -L https://github.com/cert-manager/cert-manager/releases/download/v1.17.1/cert-manager.crds.yaml
-
+# curl -O -L https://github.com/cert-manager/cert-manager/releases/download/${VERSION}/cert-manager.crds.yaml
 # Download cert-manager helm chart.
-curl -O -L https://charts.jetstack.io/charts/cert-manager-v1.17.2.tgz
-
+curl -O -L https://charts.jetstack.io/charts/cert-manager-${VERSION}.tgz
 # remove old folder and content of cert-manager 
-rm -R ./cert-manager
-
+# rm -R ./cert-manager
 # Extracting cert-manager helm chart files.
-tar -xvzf ./cert-manager-v1.17.1.tgz
-
-# Uninstall existing cert-manager and CRDs if exist.
-echo "Uninstalling cert-manager ..."
-helm uninstall cert-manager --namespace ${CERT_MANAGER_NAMESPACE} --wait
-echo "Uninstalling cert-manager done"
+# tar -xvzf ./cert-manager-${VERSION}.tgz
+# # Uninstall existing cert-manager and CRDs if exist.
+# echo "Uninstalling cert-manager ..."
+# helm uninstall cert-manager --namespace ${CERT_MANAGER_NAMESPACE} --wait
+# echo "Uninstalling cert-manager done"
 
 # echo "Uninstalling CRDs ..."
 # kubectl delete -f ./cert-manager.crds.yaml -n ${CERT_MANAGER_NAMESPACE} --wait
@@ -27,8 +23,12 @@ echo "Uninstalling cert-manager done"
 # Install cert manager with the custom value files
 echo "Installing cert manager ..."
 kubectl apply -f ./namespace.yaml
-helm upgrade --install --namespace ${CERT_MANAGER_NAMESPACE} --create-namespace --wait -f ./values-custom.yaml cert-manager ./cert-manager
+# helm upgrade --install --namespace ${CERT_MANAGER_NAMESPACE} --create-namespace --wait -f ./values-custom.yaml cert-manager ./cert-manager
+helm install cert-manager cert-manager --repo https://charts.jetstack.io --version ${VERSION} --namespace ${CERT_MANAGER_NAMESPACE} --create-namespace --wait -f ./values-custom.yaml
 echo "Cert-manager installed."
+
+# Remove the downloaded helm chart file
+# rm -R ./cert-manager
 
 # Bootstrapping CA cert 
 echo "Creating Root CA ..."

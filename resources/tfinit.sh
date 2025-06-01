@@ -2,16 +2,19 @@
 
 BASEDIR=$(dirname "$(realpath "$0")")
 
+printusage() {
+  echo "Usage: $0 <lifecycle> <region>"
+}
 
 LIFECYCLE=${1}
 if [ -z "${LIFECYCLE}" ]; then
-  echo "Usage: $0 <lifecycle>"
+  printusage
   exit 1
 fi
 
 REGION=${2}
 if [ -z "${REGION}" ]; then
-  echo "Usage: $0 <lifecycle> <region>"
+  printusage
   exit 2
 fi
 
