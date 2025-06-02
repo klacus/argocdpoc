@@ -1,35 +1,40 @@
+{{ if not .Values.gateway.enabled }}
+{{- return -}}
+{{- end }}
+
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: podinfo-cert
-  namespace: hello # Or the namespace where you want the Secret to be created
+  name: {{ include "fullName" . }}-cert
 spec:
-  secretName: podinfo-cert # The name of the Secret that will store the certificate
-  commonName: podinfo.services.argocdpoc.perihelion.lan
+  secretName: {{ .Values.gateway.certificate.secretName }} # The name of the Secret that will store the certificate
+  commonName: {{ .Values.gateway.certificate.commonName }}
   subject:
     organizations:
-      - Home Lab 
+    {{- with .Values.gateway.subject.organizations }}
+    {{- toYaml . | nindent 6 }}
+    {{- end }}
     organizationalUnits:
-      - K3s Lab
-  duration: 720h # 30 days (720 hours)
-  renewBefore: 240h # 10 days (240 hours)
+    {{- with .Values.gateway.subject.organizationalUnits }}
+    {{- toYaml . | nindent 6 }}
+    {{- end }}
+  duration: {{ .Values.gateway.certificate.duration }}
+  renewBefore: {{ .Values.gateway.certificate.renewBefore }}
   dnsNames:
-    - podinfo.services.argocdpoc.perihelion.lan
+    {{- with .Values.gateway.certificate.dnsNames }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   issuerRef:
-    # This should reference your cert-manager Issuer or ClusterIssuer.
-    # Replace 'my-issuer' with the name of your Issuer or ClusterIssuer.
-    # Replace 'Issuer' with 'ClusterIssuer' if you are using a ClusterIssuer.
-    name: my-ca-issuer
-    kind: ClusterIssuer # Or 'ClusterIssuer'
-    group: cert-manager.io
+    name: {{ .Values.gateway.certificate.issuerRef.name }}
+    kind: {{ .Values.gateway.certificate.issuerRef.kind }}
+    group: {{ .Values.gateway.certificate.issuerRef.group }}
   usages:
-      - digital signature
-      - key agreement
-      - server auth
-      - client auth
+    {{- with .Values.gateway.certificate.usages }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   privateKey:
-    algorithm: RSA
-    size: 4096 # Or 4096 for stronger security
+    algorithm: {{ .Values.gateway.certificate.privateKey.algorithm }}
+    size: {{ .Values.gateway.certificate.privateKey.size }}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
@@ -47,28 +52,14 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: my-gateway
-  namespace: hello # Or the namespace where you want your gateway to run
+  # This gateway will be dedicated to this solution
+  name: {{ include "fullName" . }}
 spec:
-  gatewayClassName: traefik # Replace with the name of your GatewayClass
+  gatewayClassName: {{ .Values.gateway.gateway.gatewayClassName }} # Replace with the name of your GatewayClass
   listeners:
-    - name: http
-      protocol: HTTP
-      port: 8000
-      allowedRoutes:
-        namespaces:
-          from: Same 
-    - name: https
-      protocol: HTTPS
-      port: 8443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: podinfo-cert
-            namespace: hello
-      allowedRoutes:
-        namespaces:
-          from: Same
+    {{- with .Values.gateway.gateway.listeners }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute

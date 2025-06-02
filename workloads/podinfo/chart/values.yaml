@@ -1,0 +1,100 @@
+name: registry
+
+image:
+  repository: argocdpoclkohlpblx.azurecr.io/podinfo
+  imagePullPolicy: IfNotPresent
+  tag: 1.0.0
+
+serviceAccountName: podinfo
+
+# It is a good practice to request resources to ensure enough CPU and RAM for optimal performance.
+# Limits only needed if you need to prevent burst to certain limits
+resources:
+  requests:
+    cpu: 100m
+    memory: 8Mi
+  limits:
+    cpu: 500m
+    memory: 16Mi
+
+annotations: {}
+
+# Set the ingress values in your custom values file based on your local environment.
+ingress:
+  enabled: false
+  host: "podinfo.services.argocdpoc.perihelion.lan"
+  annotations: {}
+
+gateway:
+  enabled: true
+  certificate:
+    secretName: podinfo-cert
+    commonName: podinfo.services.argocdpoc.perihelion.lan
+    subject:
+      organizations:
+        - Argo CD POC 
+      organizationalUnits:
+        - Podinfo Service
+    duration: 720h # 30 days (720 hours)
+    renewBefore: 240h # 10 days (240 hours)
+    dnsNames:
+      - podinfo.services.argocdpoc.perihelion.lan
+    issuerRef:
+      # This should reference your cert-manager Issuer or ClusterIssuer.
+      # Replace 'my-issuer' with the name of your Issuer or ClusterIssuer.
+      # Replace 'Issuer' with 'ClusterIssuer' if you are using a ClusterIssuer.
+      name: my-ca-issuer
+      kind: ClusterIssuer # Or 'ClusterIssuer'
+      group: cert-manager.io
+    usages:
+        - digital signature
+        - key agreement
+        - server auth
+        - client auth
+    privateKey:
+      algorithm: RSA
+      size: 4096 # Or 4096 for stronger security
+  gatewayClass:
+    name: traefik # Replace with the name of your GatewayClass
+    controllerName: "traefik.io/gateway-controller" # Replace with the actual controller name
+  gateway:
+    gatewayClassName: traefik # Replace with the name of your GatewayClass
+    listeners:
+      - name: http
+        protocol: HTTP
+        port: 8000
+        allowedRoutes:
+          namespaces:
+            from: Same 
+      - name: https
+        protocol: HTTPS
+        port: 8443
+        tls:
+          mode: Terminate
+          certificateRefs:
+            - name: podinfo-cert
+              namespace: hello
+        allowedRoutes:
+          namespaces:
+            from: Same
+
+
+  name: my-gateway
+  namespace: hello
+  sectionName: https
+  host: podinfo.services.argocdpoc.perihelion.lan
+  port: 8443
+  tls:
+    mode: Terminate
+    certificateRef:
+      name: podinfo-cert
+      namespace: hello
+  allowedRoutes:
+    namespaces:
+      from: Same
+  httpRouteName: podinfo-https-route
+  httpRouteNamespace: hello
+  httpRoutePort: 80
+  httpRouteHostnames:
+    - podinfo.services.argocdpoc.perihelion.lan
+  

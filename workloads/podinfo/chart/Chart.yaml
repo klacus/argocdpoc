@@ -1,0 +1,14 @@
+apiVersion: v2
+version: 1.0.0
+name: podinfo
+appVersion: "1.0.0"
+description: Sample application to show runtime environment information about the process and a health endpoint.
+keywords:
+- sample
+- pod information
+- pod runtime information
+maintainers:
+- email: laszlo.jobs@gmail.com
+  name: Laszlo Kohl
+
+

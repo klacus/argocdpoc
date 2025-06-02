@@ -4,11 +4,14 @@ VERSIONTAG=1.0.0
 
 docker build -t podinfo:${VERSIONTAG} .
 
-docker tag podinfo:${VERSIONTAG} registry.services.labk3s.perihelion.lan/podinfo:${VERSIONTAG}
+# docker login ${ACR}.azurecr.io
+az acr login --name ${ACR}
+
+docker tag podinfo:${VERSIONTAG} ${ACR}.azurecr.io/podinfo:${VERSIONTAG}
 
 docker images | grep podinfo
 
-docker push registry.services.labk3s.perihelion.lan/podinfo:${VERSIONTAG}
+docker push ${ACR}.azurecr.io/podinfo:${VERSIONTAG}
 
-curl -L https://registry.services.labk3s.perihelion.lan/v2/_catalog
-curl -L https://registry.services.labk3s.perihelion.lan/v2/podinfo/tags/list
+# curl -L https://${ACR}.azurecr.io/v2/_catalog
+# curl -L https://${ACR}.azurecr.io/v2/podinfo/tags/list
