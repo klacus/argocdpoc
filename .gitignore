@@ -1,3 +1,7 @@
+# Certificate files
+**/*.crt
+**/*.key
+
 # Local .terraform directories
 .terraform/
 
